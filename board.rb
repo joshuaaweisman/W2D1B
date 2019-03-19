@@ -13,9 +13,9 @@ class Board
 
   def populate
     @grid.each_with_index do |row, row_idx|
-      row.each_with_index do |square, square_idx|
-        if row_idx == 0 || row_idx == 1 || row_idx == 6 || row_idx == 7
-          @grid[row_idx][square_idx] = Piece.new([row_idx, square_idx])
+      row.each_with_index do |col, col_idx|
+        if row_idx < 2 || row_idx > 5
+          @grid[row_idx][col_idx] = Piece.new([row_idx, col_idx])
         end
       end
     end
@@ -45,6 +45,13 @@ class Board
 
   def [](pos)
     @grid[pos[0]][pos[1]]
+  end
+
+
+  def valid_pos?(pos)
+    return false if pos[0] > 7 || pos[0] < 0
+    return false if pos[1] > 7 || pos[1] < 0
+    true
   end
 
 end

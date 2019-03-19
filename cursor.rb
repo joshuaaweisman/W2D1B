@@ -1,4 +1,5 @@
 require "io/console"
+require 'byebug'
 
 KEYMAP = {
   " " => :space,
@@ -77,23 +78,25 @@ class Cursor
 
   def handle_key(key)
     case key
-    when :up
-      MOVES[:up]
-    when :down
-      MOVES[:down]
-    when :left
-      MOVES[:left]
-    when :right
-      MOVES[:right]
-    when :return || :space
+    when :up, :down, :left, :right
+      update_pos(MOVES[key])
+    when :return, :space
       return @cursor_pos
+    when :ctrl_c
+      Process.exit(0)
     end
   end
 
   def update_pos(diff)
     row_change, col_change = diff
+    target_pos = [row_change + @cursor_pos[0], col_change + @cursor_pos[1]]
 
-    @cursor_pos[0] += row_change
-    @cursor_pos[1] += col_change
+    if @board.valid_pos?(target_pos)
+      @cursor_pos = target_pos
+    else
+      raise StandardError.new "That's not on the board, dummy!"
+    end
   end
 end
+
+
