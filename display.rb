@@ -18,9 +18,9 @@ class Display
         background = :magenta if (row_idx + col_idx).odd?
 
         if [row_idx, col_idx] != cursor.cursor_pos
-          print "   ".colorize(:background => background)
+          print board[[row_idx, col_idx]].to_s.colorize(:background => background)
         else
-          print "   ".colorize(:background => :yellow)
+          print board[[row_idx, col_idx]].to_s.colorize(:background => :yellow)
         end
       end
       puts
